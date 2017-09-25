@@ -415,6 +415,22 @@ class Html
     }
 
     /**
+     * Parse span
+     *
+     * Changes the inline style when a Span element is found.
+     *
+     * @param type $node
+     * @param type $element
+     * @param array $styles
+     * @return type
+     */
+    private static function parseSpan($node, &$styles)
+    {
+        $styles['font'] = self::parseInlineStyle($node, $styles['font']);
+        return null;
+    }
+
+    /**
      * Parse style
      *
      * @param \DOMAttr $attribute
