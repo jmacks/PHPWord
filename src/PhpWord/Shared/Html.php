@@ -109,7 +109,7 @@ class Html
 
         // Node mapping table
         $nodes = array(
-                              // $method        $node   $element    $styles     $data   $argument1      $argument2
+            // $method        $node   $element    $styles     $data   $argument1      $argument2
             'p'         => array('Paragraph',   $node,  $element,   $styles,    null,   null,           null),
             'h1'        => array('Heading',     null,   $element,   $styles,    null,   'Heading1',     null),
             'h2'        => array('Heading',     null,   $element,   $styles,    null,   'Heading2',     null),
@@ -131,6 +131,7 @@ class Html
             'ol'        => array('List',        null,   null,       $styles,    $data,  7,              null),
             'li'        => array('ListItem',    $node,  $element,   $styles,    $data,  null,           null),
         );
+
 
         $newElement = null;
         $keys = array('node', 'element', 'styles', 'data', 'argument1', 'argument2');
@@ -175,18 +176,20 @@ class Html
      */
     private static function parseChildNodes($node, $element, $styles, $data)
     {
-        if ('li' != $node->nodeName) {
+        if ($node->nodeName != 'li') {
             $cNodes = $node->childNodes;
             if (count($cNodes) > 0) {
                 foreach ($cNodes as $cNode) {
+                    // Added to get tables to work
                     $htmlContainers = array(
                         'tbody',
                         'tr',
-                        'td'
+                        'td',
                     );
-                    if (in_array( $cNode->nodeName, $htmlContainers )){
+                    if (in_array( $cNode->nodeName, $htmlContainers ) ) {
                         self::parseNode($cNode, $element, $styles, $data);
                     }
+                    // All other containers as defined in AbstractContainer
                     if ($element instanceof AbstractContainer) {
                         self::parseNode($cNode, $element, $styles, $data);
                     }
@@ -297,14 +300,14 @@ class Html
 
         // $attributes = $node->attributes;
         // if ($attributes->getNamedItem('width') !== null) {
-            // $newElement->setWidth($attributes->getNamedItem('width')->value);
+        // $newElement->setWidth($attributes->getNamedItem('width')->value);
         // }
 
         // if ($attributes->getNamedItem('height') !== null) {
-            // $newElement->setHeight($attributes->getNamedItem('height')->value);
+        // $newElement->setHeight($attributes->getNamedItem('height')->value);
         // }
         // if ($attributes->getNamedItem('width') !== null) {
-            // $newElement=$element->addCell($width=$attributes->getNamedItem('width')->value);
+        // $newElement=$element->addCell($width=$attributes->getNamedItem('width')->value);
         // }
 
         return $newElement;
